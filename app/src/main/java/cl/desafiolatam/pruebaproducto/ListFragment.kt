@@ -1,12 +1,14 @@
 package cl.desafiolatam.pruebaproducto
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.fragment_list.*
-import android.util.Log
+import kotlinx.android.synthetic.main.item_productos.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,12 +32,14 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listaProductos = loadApi()
         adapter = AdapterProducts(listaProductos)
         recycler_productos.adapter = adapter
+        loadApi()
+
+
     }
 
-    fun loadApi(): ArrayList<ProductosPojoItem> {
+    fun loadApi() {
         val service = RetrofitClient.retrofitInstance()
         val call = service.getProduts()
         call.enqueue(object : Callback<List<ProductosPojoItem>> {
@@ -43,7 +47,13 @@ class ListFragment : Fragment() {
                 call: Call<List<ProductosPojoItem>>,
                 response: Response<List<ProductosPojoItem>>
             ) {
-                Log.d("Adapter", "${response.body()}")
+                   response.body()?.map {
+                    listaProductos.add(it)
+
+                }
+                adapter.notifyDataSetChanged()
+                Log . d ("Adapter", "${response.body()}")
+                Log.d ("lista", listaProductos.toString())
             }
 
             override fun onFailure(call: Call<List<ProductosPojoItem>>, t: Throwable) {
@@ -51,8 +61,6 @@ class ListFragment : Fragment() {
             }
 
         })
-        return listaProductos
     }
-
 
 }
