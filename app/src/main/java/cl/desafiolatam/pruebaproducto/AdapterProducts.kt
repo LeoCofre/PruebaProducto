@@ -1,5 +1,6 @@
 package cl.desafiolatam.pruebaproducto
 
+import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_productos.view.*
 
-class AdapterProducts(private val listaProductos : MutableList<ProductosPojoItem>) : RecyclerView.Adapter<AdapterProducts.ProductoViewHolder>(){
+class AdapterProducts(private val listaProductos: MutableList<ProductosPojoItem>) : RecyclerView.Adapter<AdapterProducts.ProductoViewHolder>(){
 
 
-    class ProductoViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
+    class ProductoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         var nombre = itemView.name_product
         var precio = itemView.precio
@@ -23,7 +24,11 @@ class AdapterProducts(private val listaProductos : MutableList<ProductosPojoItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
-        val view =LayoutInflater.from(parent.context).inflate(R.layout.item_productos, parent, false)
+        val view =LayoutInflater.from(parent.context).inflate(
+            R.layout.item_productos,
+            parent,
+            false
+        )
         return ProductoViewHolder(view)
     }
         var productoSelected =MutableLiveData<ProductosPojoItem>()
@@ -34,12 +39,14 @@ class AdapterProducts(private val listaProductos : MutableList<ProductosPojoItem
         holder.precio.text = listaProductos.get(position).price.toString()
         Picasso.get().load(listaProductos.get(position).image).into(holder.imagen)
         holder.button.setOnClickListener {
+
         productoSelected.value = listaProductos.get(position)
             Log.d("Selección", "${listaProductos.get(position)}")
 
         }
 
      }
+
 
     override fun getItemCount(): Int {
 

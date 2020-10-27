@@ -1,5 +1,6 @@
 package cl.desafiolatam.pruebaproducto
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,8 +36,6 @@ class ListFragment : Fragment() {
         adapter = AdapterProducts(listaProductos)
         recycler_productos.adapter = adapter
         loadApi()
-
-
     }
 
     fun loadApi() {
@@ -54,6 +53,8 @@ class ListFragment : Fragment() {
                 adapter.notifyDataSetChanged()
                 Log . d ("Adapter", "${response.body()}")
                 Log.d ("lista", listaProductos.toString())
+
+
             }
 
             override fun onFailure(call: Call<List<ProductosPojoItem>>, t: Throwable) {
